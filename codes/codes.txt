@@ -1,0 +1,683 @@
+style.css
+
+:root {
+    --primary-gold: #ffc107;
+    --dark-bg: #050505;
+    --card-bg: #121212;
+    --text-main: #ffffff;
+    --verificar-blue: #007bff;
+    --neon-yellow: #fff200;
+    --neon-info: #00e5ff;
+    --neon-danger: #ff1744;
+    --success-green: #00ff88; /* Verde Neon para Fechados */
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar - FOTO COLORIDA E LOGO */
+.navbar-crm {
+    background: #000;
+    border-bottom: 3px solid var(--primary-gold);
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.logo-text {
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--primary-gold);
+    text-transform: uppercase;
+}
+
+.crm-foto-perfil-full { 
+    width: 220%; 
+    height: 150px; 
+    object-fit: cover; 
+    filter: none !important; /* Força a foto a ficar colorida conforme pedido */
+    border-right: 2px solid var(--primary-gold);
+}
+
+/* Indicadores de Topo - Estilo Neon Unificado */
+.dash-card { 
+    padding: 15px; 
+    border-radius: 12px; 
+    border: 2px solid #222; 
+    transition: 0.3s;
+    text-align: center;
+    background: #111;
+    height: 100%;
+}
+
+.dash-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.dash-card h3 { 
+    font-size: 2.2rem; 
+    font-weight: 900; 
+    margin: 0; 
+    text-shadow: 0 0 10px rgba(0,0,0,0.5); 
+}
+
+.dash-card span { 
+    font-weight: 800; 
+    letter-spacing: 1px; 
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+/* Classes de Cores Neon para os Indicadores */
+.bg-warning-neon { 
+    background: rgba(255, 193, 7, 0.1) !important; 
+    border-color: var(--neon-yellow) !important; 
+}
+.bg-warning-neon h3, .bg-warning-neon span { color: var(--neon-yellow) !important; }
+
+.bg-info-neon { 
+    background: rgba(0, 229, 255, 0.1) !important; 
+    border-color: var(--neon-info) !important; 
+}
+.bg-info-neon h3, .bg-info-neon span { color: var(--neon-info) !important; }
+
+.bg-danger-neon { 
+    background: rgba(255, 23, 68, 0.1) !important; 
+    border-color: var(--neon-danger) !important; 
+}
+.bg-danger-neon h3, .bg-danger-neon span { color: var(--neon-danger) !important; }
+
+/* NOVO: Estilo Neon para Fechados */
+.bg-success-neon { 
+    background: rgba(0, 255, 136, 0.1) !important; 
+    border-color: var(--success-green) !important; 
+}
+.bg-success-neon h3, .bg-success-neon span { color: var(--success-green) !important; }
+
+/* Destaque para Filtro Ativo (Shadow) */
+.dash-card.shadow {
+    box-shadow: 0 0 15px currentColor;
+}
+
+/* Dashboard Textos de Resumo */
+.text-label-dash { color: var(--primary-gold) !important; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; }
+.text-value-dash { color: #ffffff !important; font-weight: 900; font-size: 1.3rem; display: block; }
+
+/* Grid de Leads */
+.leads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Card de Lead Individual */
+.lead-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #333;
+    border-left: 6px solid #444;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+}
+
+/* Bordas Laterais por Status */
+.lead-card.status-INTERESSADO { border-left-color: var(--neon-info); }
+.lead-card.status-SEM_INTERESSE { border-left-color: var(--neon-danger); }
+.lead-card.status-NOVO { border-left-color: var(--primary-gold); }
+.lead-card.status-FECHADO { border-left-color: var(--success-green); }
+
+/* Histórico de Interações */
+.historico-secao { 
+    background: #1a1a1a; 
+    padding: 12px; 
+    border-radius: 8px; 
+    border: 1px solid #333;
+    margin: 15px 0;
+}
+
+.historico-secao div { 
+    color: #ffffff !important; 
+    font-size: 0.9rem; 
+    font-weight: 600;
+}
+
+.text-muted.italic { 
+    color: #666 !important; 
+    font-style: italic;
+}
+
+/* Inputs e Selects */
+.select-status { 
+    background-color: #222 !important; 
+    color: #ffffff !important; 
+    border: 1px solid var(--primary-gold); 
+    padding: 5px 10px; 
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.input-comentario {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Botões de Ação */
+.btn-main {
+    background: var(--primary-gold);
+    color: #000;
+    font-weight: 900;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.btn-verificar {
+    background-color: var(--verificar-blue) !important;
+    color: #ffffff !important;
+    border: none;
+    font-weight: 900;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+/* Dashboard: Estilo para a Taxa de Desistência */
+.border-desistencia { 
+    border: 2px solid var(--neon-danger) !important; 
+}
+.text-desistencia { 
+    color: var(--neon-danger) !important; 
+}
+/* Container de Importação */
+.import-form-container {
+    display: flex;
+    gap: 0; /* Remove o espaço entre os dois para parecer uma barra única */
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 10px;
+    overflow: hidden; /* Garante que as pontas fiquem arredondadas */
+    width: 100%;
+}
+
+/* Customização do Input de Arquivo */
+.custom-file-upload {
+    flex-grow: 1; /* Faz o campo de texto ocupar todo o espaço disponível */
+    display: flex;
+    align-items: center;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* Esconde o botão feio do navegador */
+}
+
+.file-label {
+    width: 100%;
+    padding: 12px 20px;
+    color: #888;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Botão de Importar CSV */
+.btn-import-submit {
+    background: var(--primary-gold);
+    color: #000;
+    border: none;
+    padding: 0 30px;
+    font-weight: 900;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    transition: 0.3s;
+    white-space: nowrap; /* Impede o texto de quebrar linha */
+}
+
+.btn-import-submit:hover {
+    background: #fff;
+    cursor: pointer;
+}
+
+/* Ajuste no hover da barra inteira */
+.import-form-container:focus-within {
+    border-color: var(--primary-gold);
+}
+/* ================= LOGIN / CADASTRO ================= */
+
+.auth-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at top, #111 0%, #050505 100%);
+}
+
+.auth-card {
+    background: var(--card-bg);
+    border: 1px solid #333;
+    border-top: 4px solid var(--primary-gold);
+    border-radius: 15px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.1);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.auth-title {
+    text-align: center;
+    font-weight: 900;
+    color: var(--primary-gold);
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    transition: 0.2s;
+}
+
+.auth-input:focus {
+    border-color: var(--primary-gold);
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
+}
+
+.auth-button {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-gold);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auth-button:hover {
+    background: #fff;
+}
+
+.auth-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: var(--primary-gold);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* Mensagens */
+.auth-alert {
+    background: rgba(160, 160, 160, 0.1); /* fundo cinza suave */
+    border: 1px solid #a0a0a0;            /* borda cinza */
+    color: #d0d0d0;                       /* texto cinza claro */
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ERRO (vermelho) */
+.auth-alert.error {
+    background: rgba(255, 23, 68, 0.1);
+    border: 1px solid #ff1744;
+    color: #ff1744;
+}
+
+/* SUCESSO (verde) */
+.auth-alert.success {
+    background: rgba(0, 255, 128, 0.1);
+    border: 1px solid #00ff80;
+    color: #00ff80;
+}
+
+/* Animação */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Linha divisória mais clean */
+.auth-divider {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 20px 0;
+}
+
+/* Subtítulo estilo profissional */
+.auth-subtitle {
+    color: #888;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    text-align: left;
+}
+/* Realce para o card selecionado */
+.lead-card.card-active {
+    border-top: 2px solid var(--primary-gold);
+    border-right: 2px solid var(--primary-gold);
+    border-bottom: 2px solid var(--primary-gold);
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+    z-index: 10;
+}
+
+
+index.html
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phd System - CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo_aba.png') }}">
+    <style>
+        /* Estilos específicos para a nova barra de importação unificada */
+        .import-section {
+            width: 100%;
+        }
+
+        .import-form-container {
+            display: flex;
+            gap: 0; /* Unifica visualmente os elementos */
+            background-color: #111; /* Fundo escuro */
+            border: 2px solid #333; /* Borda sutil */
+            border-radius: 10px;
+            overflow: hidden; /* Pontas arredondadas perfeitas */
+            width: 100%;
+            transition: border-color 0.3s;
+        }
+
+        .import-form-container:focus-within {
+            border-color: var(--primary-gold); /* Brilho gold no foco */
+        }
+
+        /* Área do Input de Arquivo Customizada */
+        .custom-file-upload {
+            flex-grow: 1; /* Ocupa todo o espaço restante */
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .custom-file-upload input[type="file"] {
+            display: none; /* Esconde o botão padrão feio */
+        }
+
+        .file-label {
+            width: 100%;
+            padding: 12px 20px;
+            color: #888; /* Texto sutil */
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Botão de Enviar (Importar CSV) Unificado */
+        .btn-import-submit {
+            background-color: var(--primary-gold);
+            color: #000;
+            border: none;
+            padding: 0 30px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+            white-space: nowrap; /* Não quebra linha */
+        }
+
+        .btn-import-submit:hover {
+            background-color: #fff; /* Fica branco no hover */
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar-crm p-0 position-relative overflow-hidden">
+    <div class="row g-0 h-100">
+        <div class="col-md-2 d-none d-md-block">
+            <img src="{{ url_for('static', filename='img/Kratos.jpeg') }}" class="crm-foto-perfil-full" alt="Perfil">
+        </div>
+        <div class="col d-flex align-items-center justify-content-center">
+            <h1 class="logo-text m-0">RANGEL <span class="text-white">SEMIDEUS</span></h1>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-dark p-3 rounded border border-secondary shadow-lg">
+        <div class="d-flex gap-2 align-items-center">
+            <label class="text-warning small fw-bold">PERÍODO:</label>
+            <select class="form-select form-select-sm bg-black text-warning border-warning w-auto fw-bold" 
+                    onchange="location.href='/?mes='+this.value+'&ano='+document.getElementById('ano-select').value">
+                {% for m in range(1, 13) %}
+                <option value="{{ m }}" {% if m == mes_atual %}selected{% endif %}>Mês {{ m }}</option>
+                {% endfor %}
+            </select>
+            <select id="ano-select" class="form-select form-select-sm bg-black text-warning border-warning w-auto fw-bold" 
+                    onchange="location.href='/?ano='+this.value+'&mes='+document.querySelector('select').value">
+                {% for a in range(2024, 2028) %}
+                <option value="{{ a }}" {% if a == ano_atual %}selected{% endif %}>{{ a }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <a href="/dashboard?mes={{ mes_atual }}" class="btn btn-warning btn-sm fw-bold px-4 shadow-sm">VER DASHBOARD ESTATÍSTICO</a>
+    </div>
+
+    <div class="row g-2 mb-4 text-center">
+        <div class="col">
+            <a href="/?mes={{ mes_atual }}&status=TODOS" class="text-decoration-none">
+                <div class="dash-card bg-dark {% if status_ativo == 'TODOS' %}border-warning shadow{% endif %}">
+                    <span>TOTAL</span>
+                    <h3 class="text-white">{{ stats.TOTAL }}</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="/?mes={{ mes_atual }}&status=PENDENTES" class="text-decoration-none">
+                <div class="dash-card bg-warning-neon {% if status_ativo == 'PENDENTES' %}shadow{% endif %}">
+                    <span class="text-warning">PENDENTES</span>
+                    <h3 class="text-warning">{{ stats.PENDENTES }}</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="/?mes={{ mes_atual }}&status=INTERESSADOS" class="text-decoration-none">
+                <div class="dash-card bg-info-neon {% if status_ativo == 'INTERESSADOS' %}shadow{% endif %}">
+                    <span class="text-info">INTERESSADOS</span>
+                    <h3 class="text-info">{{ stats.INTERESSADOS }}</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="/?mes={{ mes_atual }}&status=NAO_INTERESSADO" class="text-decoration-none">
+                <div class="dash-card bg-danger-neon {% if status_ativo == 'NAO_INTERESSADO' %}shadow{% endif %}">
+                    <span class="text-danger">DESISTENTES</span>
+                    <h3 class="text-danger">{{ stats.NAO_INTERESSADO }}</h3>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="/?mes={{ mes_atual }}&status=FECHADOS" class="text-decoration-none">
+                <div class="dash-card bg-success-neon {% if status_ativo == 'FECHADOS' %}shadow{% endif %}">
+                    <span style="color: #00ff88 !important;">FECHADOS</span>
+                    <h3 style="color: #00ff88 !important;">{{ stats.FECHADOS }}</h3>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="import-section mb-4">
+        <form action="/upload" method="post" enctype="multipart/form-data" class="import-form-container shadow-sm">
+            <div class="custom-file-upload">
+                <input type="file" name="file" id="file-input" required>
+                <label for="file-input" class="file-label">
+                    <span id="file-name">Clique para escolher o arquivo CSV...</span>
+                </label>
+            </div>
+            <button type="submit" class="btn-import-submit">IMPORTAR CSV</button>
+        </form>
+    </div>
+
+    <div class="leads-grid">
+        {% for lead in leads %}
+        <div class="lead-card status-{{ lead.status_comercial }}">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="badge bg-secondary small">{{ lead.estagio }}</span>
+                <select class="select-status" onchange="handleStatusChange('{{lead.id}}', this.value)">
+                    <option value="NOVO" {% if lead.status_comercial == 'NOVO' %}selected{% endif %}>Novo</option>
+                    <option value="INTERESSADO" {% if lead.status_comercial == 'INTERESSADO' %}selected{% endif %}>Interessado</option>
+                    <option value="SEM_INTERESSE" {% if lead.status_comercial == 'SEM_INTERESSE' %}selected{% endif %}>Sem Interesse</option>
+                    <option value="FECHADO" {% if lead.status_comercial == 'FECHADO' %}selected{% endif %}>✅ Fechado</option>
+                </select>
+            </div>
+
+            <h4 class="lead-name m-0 text-white fw-bold">{{ lead.nome }}</h4>
+            <p class="text-warning small mb-3">{{ lead.contato }}</p>
+
+            <div class="historico-secao">
+                {% for h in lead.interacoes[:1] %}
+                    <div><span class="text-warning">[{{ h.data.strftime('%d/%m') }}]</span> {{ h.acao }}</div>
+                {% else %}
+                    <span class="text-muted italic">Sem registros</span>
+                {% endfor %}
+            </div>
+
+            <input type="text" class="input-comentario" placeholder="Nota rápida..." 
+                   value="{{ lead.comentario or '' }}" onblur="salvarComentario('{{ lead.id }}', this.value)">
+
+            <div class="mt-auto">
+                {% if lead.status_comercial == 'FECHADO' %}
+                    <button class="btn btn-success w-100 fw-bold py-2" style="background: #00ff88; color: #000; border: none; cursor: default;">MATRÍCULA REALIZADA</button>
+                {% elif lead.acao_pendente %}
+                    <button class="btn-main" onclick="apiAction('/enviar/{{ lead.id }}')">ENVIAR MENSAGEM</button>
+                {% else %}
+                    <button class="btn-verificar" onclick="apiAction('/verificar/{{ lead.id }}')">VERIFICAR</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="modal fade" id="modalMotivo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-warning shadow-lg">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-warning fw-bold">Motivo da Desistência</h5>
+            </div>
+            <div class="modal-body d-grid gap-2">
+                <button onclick="confirmarSemInteresse('Preço')" class="btn btn-outline-light py-2">💰 Preço / Condição</button>
+                <button onclick="confirmarSemInteresse('Atendimento')" class="btn btn-outline-light py-2">🤝 Atendimento</button>
+                <button onclick="confirmarSemInteresse('Estrutura')" class="btn btn-outline-light py-2">🏋️ Estrutura</button>
+                <button onclick="confirmarSemInteresse('Distância')" class="btn btn-outline-light py-2">📍 Distância</button>
+                <button onclick="confirmarSemInteresse('Sem Resposta')" class="btn btn-outline-light py-2">📵 Sem Resposta</button>
+                <button onclick="confirmarSemInteresse('Outros')" class="btn btn-outline-light py-2">Outros</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Script para atualizar o nome do arquivo selecionado na nova barra unificada
+    document.getElementById('file-input').addEventListener('change', function() {
+        var fileName = this.files[0] ? this.files[0].name : "Clique para escolher o arquivo CSV...";
+        document.getElementById('file-name').textContent = fileName;
+        // Muda a cor do texto para branco ao selecionar arquivo
+        if(this.files[0]) {
+            document.getElementById('file-name').style.color = '#fff';
+        } else {
+            document.getElementById('file-name').style.color = '#888';
+        }
+    document.querySelectorAll('.lead-card').forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove de todos os outros
+            document.querySelectorAll('.lead-card').forEach(c => c.classList.remove('card-active'));
+            // Adiciona ao clicado
+            this.classList.add('card-active');
+        });
+        });
+        });
+
+    // Funções do CRM
+    let activeLeadId = null;
+    const modal = new bootstrap.Modal(document.getElementById('modalMotivo'));
+
+    function handleStatusChange(id, status) {
+        if (status === 'SEM_INTERESSE') {
+            activeLeadId = id;
+            modal.show();
+        } else {
+            executarMudanca(id, status);
+        }
+    }
+
+    function confirmarSemInteresse(m) {
+        executarMudanca(activeLeadId, 'SEM_INTERESSE', m);
+        modal.hide();
+    }
+
+    function executarMudanca(id, s, m = '') {
+        let fd = new FormData();
+        fd.append('motivo', m);
+        fetch(`/status/${id}/${s}`, { method: 'POST', body: fd }).then(() => location.reload());
+    }
+
+    function apiAction(url) {
+        fetch(url).then(() => location.reload());
+    }
+
+    function salvarComentario(id, v) {
+        let fd = new FormData();
+        fd.append('comentario', v);
+        fetch(`/comentario/${id}`, { method: 'POST', body: fd });
+    }
+</script>
+</body>
+</html>

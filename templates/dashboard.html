@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Desistências - PHD System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo_aba.png') }}">
+    <style>
+        .card-stats {
+            background: #121212;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .active-motivo {
+            background-color: rgba(255, 193, 7, 0.1) !important;
+            border-left: 4px solid var(--primary-gold) !important;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+
+    <nav class="navbar navbar-dark bg-black border-bottom border-warning mb-4">
+        <div class="container">
+            <span class="navbar-brand fw-bold text-warning">PHD SYSTEM <span class="text-white">| ANALYTICS</span></span>
+            <a href="/" class="btn btn-outline-warning btn-sm"><i class="bi bi-house-door"></i> Voltar ao CRM</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="mb-4 d-flex justify-content-between align-items-center bg-dark p-3 rounded border border-secondary">
+            <div>
+                <h4 class="text-warning mb-0 fw-bold"><i class="bi bi-calendar3 me-2"></i>PERÍODO DE ANÁLISE</h4>
+                <small class="text-secondary">Visualizando dados de: {{ mes }}/{{ ano }}</small>
+            </div>
+            <div class="d-flex gap-2">
+                <select id="mes-dashboard" class="form-select bg-black text-warning border-warning fw-bold w-auto">
+                    {% for m in range(1, 13) %}
+                    <option value="{{ m }}" {% if m == mes %}selected{% endif %}>Mês {{ m }}</option>
+                    {% endfor %}
+                </select>
+                <select id="ano-dashboard" class="form-select bg-black text-warning border-warning fw-bold w-auto">
+                    {% for a in range(2024, 2027) %}
+                    <option value="{{ a }}" {% if a == ano %}selected{% endif %}>{{ a }}</option>
+                    {% endfor %}
+                </select>
+                <button onclick="atualizarPeriodo()" class="btn btn-warning fw-bold">FILTRAR</button>
+            </div>
+        </div>
+
+        <div class="row mb-4 text-center">
+            <div class="col-md-4">
+                <div class="card card-stats p-3">
+                    <h6 class="text-secondary small">TOTAL DE LEADS NO MÊS</h6>
+                    <h2 class="text-white fw-bold">{{ total }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-stats p-3 border-danger">
+                    <h6 class="text-secondary small">DESISTÊNCIAS</h6>
+                    <h2 class="text-danger fw-bold">{{ motivos|sum(attribute='qtd') }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-stats p-3 border-warning">
+                    <h6 class="text-secondary small">TAXA DE DESISTÊNCIA</h6>
+                    <h2 class="text-warning fw-bold">{{ taxa }}%</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card bg-dark border-secondary">
+                    <div class="card-header border-secondary bg-black">
+                        <h5 class="text-white mb-0">Motivos de Desistência</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            {% for m in motivos %}
+                            <a href="/dashboard?mes={{ mes }}&ano={{ ano }}&motivo={{ m.motivo }}" 
+                               class="list-group-item list-group-item-action bg-transparent border-secondary d-flex justify-content-between align-items-center {% if mot_ativo == m.motivo %}active-motivo{% endif %}">
+                                <span class="text-light">
+                                    {% if m.motivo == 'Sem Resposta' %}📵{% elif m.motivo == 'Valor' %}💰{% else %}❌{% endif %} 
+                                    {{ m.motivo }}
+                                </span>
+                                <span class="badge bg-warning text-black rounded-pill">{{ m.qtd }}</span>
+                            </a>
+                            {% else %}
+                            <div class="p-4 text-center">
+                                <p class="text-secondary mb-0">Nenhuma desistência registada neste período.</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                {% if mot_ativo %}
+                <div class="card bg-dark border-warning animate__animated animate__fadeIn">
+                    <div class="card-header border-warning bg-black d-flex justify-content-between align-items-center">
+                        <h5 class="text-warning mb-0">Leads que citaram: {{ mot_ativo }}</h5>
+                        <a href="/dashboard?mes={{ mes }}&ano={{ ano }}" class="btn-close btn-close-white"></a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover mb-0">
+                                <thead class="table-black">
+                                    <tr>
+                                        <th>Nome do Lead</th>
+                                        <th>Contato</th>
+                                        <th class="text-end">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for aluno in alunos %}
+                                    <tr>
+                                        <td class="align-middle">{{ aluno.nome }}</td>
+                                        <td class="align-middle">{{ aluno.contato }}</td>
+                                        <td class="text-end">
+                                            <a href="whatsapp://send?phone={{ aluno.contato|replace(' ', '')|replace('-', '')|replace('(', '')|replace(')', '') }}" 
+                                            class="btn btn-sm btn-success">
+                                                <i class="bi bi-whatsapp"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="h-100 d-flex flex-column align-items-center justify-content-center border border-secondary rounded bg-dark p-5">
+                    <i class="bi bi-cursor text-secondary display-1 mb-3"></i>
+                    <p class="text-secondary">Selecione um motivo ao lado para ver a lista de contatos.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function atualizarPeriodo() {
+            const mes = document.getElementById('mes-dashboard').value;
+            const ano = document.getElementById('ano-dashboard').value;
+            window.location.href = `/dashboard?mes=${mes}&ano=${ano}`;
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

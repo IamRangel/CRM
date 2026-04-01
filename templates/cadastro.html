@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro CRM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo_aba.png') }}">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h2 class="auth-title">NOVO USUÁRIO</h2>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="auth-alert">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+
+            <!-- 👤 NOVO USUÁRIO -->
+            <input type="text" name="username" placeholder="Usuário" class="auth-input" required>
+            <input type="password" name="password" placeholder="Senha" class="auth-input" required>
+
+            <hr class="auth-divider">
+
+            <!-- 🔒 ADMIN -->
+            <h2 class="auth-title">PERMISSÃO ADMIN</h2>
+
+            <input type="text" name="admin_user" placeholder="Usuário Admin" class="auth-input" required>
+            <input type="password" name="admin_pass" placeholder="Senha Admin" class="auth-input" required>
+
+            <button type="submit" class="auth-button">Cadastrar</button>
+
+        </form>
+
+        <a href="{{ url_for('login') }}" class="auth-link">
+            Voltar para login
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>
