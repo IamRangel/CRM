@@ -1,0 +1,9 @@
+Git Hub 
+
+git init
+git remote add origin https://github.com/IamRangel/CRM.git
+git add .
+git commit -m "feat: primeiro commit do projeto"
+git branch -M main
+git push -u origin main
+

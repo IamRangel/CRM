@@ -90,25 +90,7 @@
 </nav>
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4 bg-dark p-3 rounded border border-secondary shadow-lg">
-        <div class="d-flex gap-2 align-items-center">
-            <label class="text-warning small fw-bold">PERÍODO:</label>
-            <select class="form-select form-select-sm bg-black text-warning border-warning w-auto fw-bold" 
-                    onchange="location.href='/?mes='+this.value+'&ano='+document.getElementById('ano-select').value">
-                {% for m in range(1, 13) %}
-                <option value="{{ m }}" {% if m == mes_atual %}selected{% endif %}>Mês {{ m }}</option>
-                {% endfor %}
-            </select>
-            <select id="ano-select" class="form-select form-select-sm bg-black text-warning border-warning w-auto fw-bold" 
-                    onchange="location.href='/?ano='+this.value+'&mes='+document.querySelector('select').value">
-                {% for a in range(2024, 2028) %}
-                <option value="{{ a }}" {% if a == ano_atual %}selected{% endif %}>{{ a }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <a href="/dashboard?mes={{ mes_atual }}" class="btn btn-warning btn-sm fw-bold px-4 shadow-sm">VER DASHBOARD ESTATÍSTICO</a>
-    </div>
-
+    <!-- 1º CARDS ESTATÍSTICOS -->
     <div class="row g-2 mb-4 text-center">
         <div class="col">
             <a href="/?mes={{ mes_atual }}&status=TODOS" class="text-decoration-none">
@@ -152,6 +134,7 @@
         </div>
     </div>
 
+    <!-- 2º BARRA DE IMPORTAR CSV -->
     <div class="import-section mb-4">
         <form action="/upload" method="post" enctype="multipart/form-data" class="import-form-container shadow-sm">
             <div class="custom-file-upload">
@@ -164,7 +147,48 @@
         </form>
     </div>
 
-    <div class="leads-grid">
+    <!-- 3º BARRA DE PERÍODO -->
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-dark p-3 rounded border border-secondary shadow-lg">
+        <div class="d-flex gap-2 align-items-center flex-grow-1">
+            <label class="text-warning small fw-bold">PERÍODO:</label>
+            <select class="form-select form-select-sm bg-black text-warning border-warning w-auto fw-bold" 
+                    onchange="location.href='/?mes='+this.value+'&ano='+document.getElementById('ano-select').value">
+                {% for m in range(1, 13) %}
+                <option value="{{ m }}" {% if m == mes_atual %}selected{% endif %}>Mês {{ m }}</option>
+                {% endfor %}
+            </select>
+            <select id="ano-select" class="form-select form-select-sm bg-black text-warning border-warning w-auto fw-bold" 
+                    onchange="location.href='/?ano='+this.value+'&mes='+document.querySelector('select').value">
+                {% for a in range(2024, 2028) %}
+                <option value="{{ a }}" {% if a == ano_atual %}selected{% endif %}>{{ a }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/dashboard?mes={{ mes_atual }}" class="btn btn-warning btn-sm fw-bold px-4 shadow-sm">VER DASHBOARD ESTATÍSTICO</a>
+        </div>
+    </div>
+
+    <!-- 4º BARRA DE PESQUISA -->
+    <div class="search-section mb-4">
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" 
+                       id="search-input" 
+                       class="search-input" 
+                       placeholder=" Buscar cliente por nome ou telefone..."
+                       autocomplete="off">
+                <button id="clear-search" class="clear-search-btn" style="display: none;">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
+
+    <div id="leads-container">
+        <div class="leads-grid" id="leads-grid">
         {% for lead in leads %}
         <div class="lead-card status-{{ lead.status_comercial }}">
             <div class="d-flex justify-content-between align-items-start mb-2">
@@ -173,7 +197,7 @@
                     <option value="NOVO" {% if lead.status_comercial == 'NOVO' %}selected{% endif %}>Novo</option>
                     <option value="INTERESSADO" {% if lead.status_comercial == 'INTERESSADO' %}selected{% endif %}>Interessado</option>
                     <option value="SEM_INTERESSE" {% if lead.status_comercial == 'SEM_INTERESSE' %}selected{% endif %}>Sem Interesse</option>
-                    <option value="FECHADO" {% if lead.status_comercial == 'FECHADO' %}selected{% endif %}>✅ Fechado</option>
+                    <option value="FECHADO" {% if lead.status_comercial == 'FECHADO' %}selected{% endif %}> Fechado</option>
                 </select>
             </div>
 
@@ -202,6 +226,14 @@
             </div>
         </div>
         {% endfor %}
+        </div>
+        <div id="no-results" class="no-results" style="display: none;">
+            <div class="text-center py-5">
+                <i class="bi bi-search" style="font-size: 3rem; color: #666;"></i>
+                <h4 class="text-muted mt-3">Nenhum cliente encontrado</h4>
+                <p class="text-muted">Tente buscar com outros termos</p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -224,6 +256,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 <script>
     // Script para atualizar o nome do arquivo selecionado na nova barra unificada
     document.getElementById('file-input').addEventListener('change', function() {
@@ -235,15 +268,7 @@
         } else {
             document.getElementById('file-name').style.color = '#888';
         }
-    document.querySelectorAll('.lead-card').forEach(card => {
-        card.addEventListener('click', function() {
-            // Remove de todos os outros
-            document.querySelectorAll('.lead-card').forEach(c => c.classList.remove('card-active'));
-            // Adiciona ao clicado
-            this.classList.add('card-active');
-        });
-        });
-        });
+    });
 
     // Funções do CRM
     let activeLeadId = null;
@@ -278,6 +303,242 @@
         fd.append('comentario', v);
         fetch(`/comentario/${id}`, { method: 'POST', body: fd });
     }
+
+    // ================= FUNCIONALIDADE DE PESQUISA =================
+    const searchInput = document.getElementById('search-input');
+    const clearSearchBtn = document.getElementById('clear-search');
+    const searchResults = document.getElementById('search-results');
+    const leadsGrid = document.getElementById('leads-grid');
+    const noResults = document.getElementById('no-results');
+    let searchTimeout;
+
+    // Dados dos leads (passados do template para JavaScript)
+    const leadsData = [
+        {% for lead in leads %}
+        {
+            id: {{ lead.id }},
+            nome: "{{ lead.nome | replace('"', '\\"') }}",
+            contato: "{{ lead.contato }}",
+            status: "{{ lead.status_comercial }}",
+            estagio: "{{ lead.estagio }}",
+            acao_pendente: "{{ lead.acao_pendente or '' }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // Event Listeners para pesquisa
+    searchInput.addEventListener('input', handleSearch);
+    clearSearchBtn.addEventListener('click', clearSearch);
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.length > 0) {
+            showSearchResults(leadsData);
+        }
+    });
+
+    // Fechar resultados ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+            hideSearchResults();
+        }
+    });
+
+    function handleSearch() {
+        const query = searchInput.value.trim().toLowerCase();
+        
+        // Mostrar/ocultar botão de limpar
+        clearSearchBtn.style.display = query ? 'flex' : 'none';
+        
+        // Debounce para evitar muitas requisições
+        clearTimeout(searchTimeout);
+        
+        if (query.length === 0) {
+            hideSearchResults();
+            showAllLeads();
+            return;
+        }
+        
+        if (query.length < 2) {
+            hideSearchResults();
+            return;
+        }
+        
+        searchTimeout = setTimeout(() => {
+            performSearch(query);
+        }, 300);
+    }
+
+    function performSearch(query) {
+        const results = leadsData.filter(lead => 
+            lead.nome.toLowerCase().includes(query) || 
+            lead.contato.includes(query)
+        );
+        
+        if (results.length > 0) {
+            showSearchResults(results);
+            filterLeads(results);
+        } else {
+            showNoResults();
+        }
+    }
+
+    function showSearchResults(results) {
+        searchResults.innerHTML = '';
+        
+        results.slice(0, 5).forEach(lead => {
+            const item = createSearchResultItem(lead);
+            searchResults.appendChild(item);
+        });
+        
+        if (results.length > 5) {
+            const moreItem = document.createElement('div');
+            moreItem.className = 'search-result-item text-center text-muted';
+            moreItem.innerHTML = `<small>... e mais ${results.length - 5} resultados</small>`;
+            searchResults.appendChild(moreItem);
+        }
+        
+        searchResults.style.display = 'block';
+    }
+
+    function createSearchResultItem(lead) {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.onclick = () => selectLead(lead);
+        
+        const statusClass = getStatusClass(lead.status);
+        const statusText = getStatusText(lead.status);
+        
+        item.innerHTML = `
+            <div>
+                <div class="search-result-name">${lead.nome}</div>
+                <div class="search-result-contact">${lead.contato}</div>
+            </div>
+            <span class="search-result-status ${statusClass}">${statusText}</span>
+        `;
+        
+        return item;
+    }
+
+    function getStatusClass(status) {
+        const statusMap = {
+            'NOVO': 'novo',
+            'INTERESSADO': 'interessado',
+            'SEM_INTERESSE': 'sem_interesse',
+            'FECHADO': 'fechado'
+        };
+        return statusMap[status] || 'novo';
+    }
+
+    function getStatusText(status) {
+        const statusMap = {
+            'NOVO': 'Novo',
+            'INTERESSADO': 'Interessado',
+            'SEM_INTERESSE': 'Sem Interesse',
+            'FECHADO': 'Fechado'
+        };
+        return statusMap[status] || status;
+    }
+
+    function selectLead(lead) {
+        searchInput.value = lead.nome;
+        hideSearchResults();
+        
+        // Scroll até o card do lead
+        const leadCard = document.querySelector(`[data-lead-id="${lead.id}"]`);
+        if (leadCard) {
+            leadCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            leadCard.classList.add('card-active');
+            setTimeout(() => leadCard.classList.remove('card-active'), 2000);
+        }
+        
+        // Filtrar para mostrar apenas este lead
+        filterLeads([lead]);
+    }
+
+    function filterLeads(leads) {
+        const cards = document.querySelectorAll('.lead-card');
+        
+        if (leads.length === 0) {
+            leadsGrid.style.display = 'none';
+            noResults.style.display = 'block';
+            return;
+        }
+        
+        leadsGrid.style.display = 'grid';
+        noResults.style.display = 'none';
+        
+        const leadIds = leads.map(l => l.id);
+        
+        cards.forEach(card => {
+            const cardId = parseInt(card.dataset.leadId);
+            if (leadIds.includes(cardId)) {
+                card.style.display = 'flex';
+                card.style.animation = 'fadeInUp 0.4s ease-out';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function showAllLeads() {
+        const cards = document.querySelectorAll('.lead-card');
+        leadsGrid.style.display = 'grid';
+        noResults.style.display = 'none';
+        
+        cards.forEach(card => {
+            card.style.display = 'flex';
+            card.style.animation = '';
+        });
+    }
+
+    function showNoResults() {
+        hideSearchResults();
+        leadsGrid.style.display = 'none';
+        noResults.style.display = 'block';
+    }
+
+    function hideSearchResults() {
+        searchResults.style.display = 'none';
+    }
+
+    function clearSearch() {
+        searchInput.value = '';
+        clearSearchBtn.style.display = 'none';
+        hideSearchResults();
+        showAllLeads();
+        searchInput.focus();
+    }
+
+    // Adicionar data-lead-id aos cards para facilitar a busca
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.lead-card');
+        cards.forEach((card, index) => {
+            if (leadsData[index]) {
+                card.dataset.leadId = leadsData[index].id;
+            }
+        });
+        
+        // Adicionar evento de clique aos cards
+        document.querySelectorAll('.lead-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.lead-card').forEach(c => c.classList.remove('card-active'));
+                this.classList.add('card-active');
+            });
+        });
+    });
+
+    // Atalhos de teclado
+    document.addEventListener('keydown', (e) => {
+        // Ctrl+K ou Cmd+K para focar na pesquisa
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            searchInput.focus();
+        }
+        
+        // Escape para limpar pesquisa
+        if (e.key === 'Escape' && document.activeElement === searchInput) {
+            clearSearch();
+        }
+    });
 </script>
 </body>
 </html>
